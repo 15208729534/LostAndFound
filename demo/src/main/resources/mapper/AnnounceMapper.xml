@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.AnnounceDao">
+  <resultMap id="BaseResultMap" type="com.example.demo.domain.Announce">
+    <id column="announce_id" jdbcType="INTEGER" property="announceId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="item_name" jdbcType="VARCHAR" property="itemName" />
+    <result column="announce_type" jdbcType="BIT" property="announceType" />
+    <result column="item_photo" jdbcType="VARCHAR" property="itemPhoto" />
+    <result column="tag_name" jdbcType="VARCHAR" property="tagName" />
+    <result column="item_description" jdbcType="VARCHAR" property="itemDescription" />
+    <result column="item_time" jdbcType="TIMESTAMP" property="itemTime" />
+    <result column="item_place" jdbcType="VARCHAR" property="itemPlace" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="is_status" jdbcType="INTEGER" property="isStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    announce_id, user_id, item_name, announce_type, item_photo, tag_name, item_description, 
+    item_time, item_place, contact,is_status
+  </sql>
+
+  <insert id="insertSelective" parameterType="com.example.demo.domain.Announce">
+    insert into announce
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="announceId != null">
+        announce_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="itemName != null">
+        item_name,
+      </if>
+      <if test="announceType != null">
+        announce_type,
+      </if>
+
+        item_photo,
+
+
+        tag_name,
+
+
+        item_description,
+
+      <if test="itemTime != null">
+        item_time,
+      </if>
+
+        item_place,
+
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="isStatus != null">
+        is_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="announceId != null">
+        #{announceId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null">
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="announceType != null">
+        #{announceType,jdbcType=BIT},
+      </if>
+
+        #{itemPhoto,jdbcType=VARCHAR},
+
+
+        #{tagName,jdbcType=VARCHAR},
+
+
+        #{itemDescription,jdbcType=VARCHAR},
+
+      <if test="itemTime != null">
+        #{itemTime,jdbcType=TIMESTAMP},
+      </if>
+
+        #{itemPlace,jdbcType=VARCHAR},
+
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="isStatus != null">
+        #{isStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByIsStatus" parameterType="java.lang.Integer">
+        update announce
+        set is_status = 3
+        where is_status<![CDATA[<>]]>3 and announce_id = #{announceId,jdbcType=INTEGER}
+        <!--<![CDATA[<>]]>相当于！=-->
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.domain.Announce">
+    update announce
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="itemName != null">
+        item_name = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="announceType != null">
+        announce_type = #{announceType,jdbcType=BIT},
+      </if>
+
+        item_photo = #{itemPhoto,jdbcType=VARCHAR},
+
+
+        tag_name = #{tagName,jdbcType=VARCHAR},
+
+
+        item_description = #{itemDescription,jdbcType=VARCHAR},
+
+      <if test="itemTime != null">
+        item_time = #{itemTime,jdbcType=TIMESTAMP},
+      </if>
+
+        item_place = #{itemPlace,jdbcType=VARCHAR},
+
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="isStatus != null">
+        is_status = #{isStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where announce_id = #{announceId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from announce
+    where is_status<![CDATA[<>]]>3
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from announce
+    where announce_id = #{announceId,jdbcType=INTEGER}
+    AND is_status<![CDATA[<>]]>3
+  </select>
+
+  <select id="selectByAnnounceType" parameterType="java.lang.Boolean" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from announce
+    where announce_type = #{announceType,jdbcType=BIT}
+    AND is_status<![CDATA[<>]]>3
+  </select>
+
+  <select id="selectByTagName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from announce
+    where tag_name = #{tagName,jdbcType=VARCHAR}
+    AND is_status<![CDATA[<>]]>3
+  </select>
+
+</mapper>
